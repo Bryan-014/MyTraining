@@ -1,6 +1,7 @@
-import { Link, useRouter } from 'expo-router';
+import AppLayout from '@/components/app-layout';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Button, FlatList, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createWorkout, getWorkouts } from '../src/database/services/workoutService';
 
 type Workout = {
@@ -31,12 +32,8 @@ export default function Index() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 16, paddingTop: 48 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
-        Meus Treinos 💪
-      </Text>
-
-      <TextInput
+    <AppLayout title="Vamos Cuidar da Saúde?">
+      {/* <TextInput
         placeholder="Nome do treino"
         value={name}
         onChangeText={setName}
@@ -52,26 +49,20 @@ export default function Index() {
 
       <Link href="/exercises" style={{ marginVertical: 8 }}>
         <Text style={{ color: 'blue' }}>Ver exercícios</Text>
-      </Link>
+      </Link> */}
 
       <FlatList
         data={workouts}
         keyExtractor={(item) => item.id.toString()}
-        style={{ marginTop: 16 }}
+        scrollEnabled={false}
+        style={{ marginTop: 32, marginBottom: 8
+
+         }}
         renderItem={({ item }) => (
-          <Pressable
-            style={{
-              padding: 12,
-              borderWidth: 1,
-              borderRadius: 8,
-              marginBottom: 8
-            }}
-            onPress={() => {
-                router.push(`/workout?id=${item.id}&name=${item.name}`);
-            }}
-          >
-            <Text>{item.name}</Text>
+          <View style={styles.workoutCard}>
+            <Text style={styles.workoutTitle}>{item.name}</Text>
             <TouchableOpacity
+                style={styles.workoutButton}
                 onPress={() =>
                     router.push({
                     pathname: '/executeWorkout',
@@ -79,11 +70,45 @@ export default function Index() {
                     })
                 }
                 >
-                <Text>Iniciar treino</Text>
+                <Text style={styles.workoutButtonText}>Iniciar treino</Text>
             </TouchableOpacity>
-          </Pressable>
+          </View>
+        
         )}
       />
-    </View>
+    </AppLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  workoutCard: {
+    width: '100%',
+    backgroundColor: '#3a4b74ff',
+    marginBottom: 32,
+    padding: 22,
+    borderRadius: 18,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 2,
+    shadowRadius: 2,  
+    alignItems: 'center'
+  },
+  workoutTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '600'
+  },
+  workoutButton: {
+    backgroundColor: '#78f4ffff',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8
+  },
+  workoutButtonText: {
+    color: '#13163aff',
+    fontWeight: '700',
+    fontSize: 14
+  }
+});

@@ -1,5 +1,8 @@
+import AppLayout from '@/components/app-layout';
+import FloatingLabelInput from '@/components/floatin-label-input';
+import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Button, FlatList, Text, TextInput, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createExercise, getExercises } from '../src/database/services/exerciseService';
 
 type Exercise = {
@@ -28,42 +31,85 @@ export default function Exercises() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 16, paddingTop: 48 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
-        Exercícios 🏋️
-      </Text>
-
-      <TextInput
-        placeholder="Nome do exercício"
-        value={name}
-        onChangeText={setName}
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          padding: 8,
-          marginVertical: 12
-        }}
+    <AppLayout title="Gerenciar Exercícios">
+      <FloatingLabelInput 
+          label='Nome do Exercício'
+          value={name}
+          onChangeText={setName}
       />
-
-      <Button title="Adicionar exercício" onPress={handleAdd} />
+      <TouchableOpacity 
+          style={styles.button}
+          onPress={handleAdd}
+      >
+          <Text style={styles.buttonText}>Adicionar Exercício</Text>
+      </TouchableOpacity>
+      <Link 
+          style={styles.button}
+          href="/manage"
+      >
+          <Text style={styles.buttonText}>Gerenciar Treinos</Text>
+      </Link>
 
       <FlatList
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 16, marginBottom: 8 }}
+        scrollEnabled={false}
         renderItem={({ item }) => (
           <View
-            style={{
-              padding: 12,
-              borderWidth: 1,
-              borderRadius: 8,
-              marginBottom: 8
-            }}
+            style={styles.workoutCard}
           >
-            <Text>{item.name}</Text>
+            <Text style={styles.workoutTitle}>{item.name}</Text>
           </View>
         )}
       />
-    </View>
+    </AppLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#407ddfff',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: '800',
+    fontSize: 18
+  },
+  workoutCard: {
+    width: '100%',
+    backgroundColor: '#3a4b74ff',
+    marginBottom: 18,
+    padding: 22,
+    borderRadius: 18,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 2,
+    shadowRadius: 2,  
+    alignItems: 'center'
+  },
+  workoutTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '600'
+  },
+  workoutButton: {
+    backgroundColor: '#78f4ffff',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8
+  },
+  workoutButtonText: {
+    color: '#13163aff',
+    fontWeight: '700',
+    fontSize: 14
+  }
+});

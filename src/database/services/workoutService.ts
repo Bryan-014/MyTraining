@@ -25,3 +25,12 @@ export function deleteWorkout(id: number) {
     [id]
   );
 }
+
+export function getWorkoutById(id: number): Workout {
+  const result = db.getAllSync<Workout>(
+    'SELECT * FROM workouts WHERE id = ?;',
+    [id]
+  );
+
+  return result ? result[0] : { id: 0, name: '' };
+}
