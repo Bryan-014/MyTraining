@@ -166,7 +166,7 @@ export default function ExecuteWorkout() {
                 <Text style={modal.title}>{currentExercise.name}</Text>
 
                 <Text style={modal.subtitle}>
-                  Série {currentExercise.currentSet} /{' '}
+                  {currentExercise.reps} X / {currentExercise.weight} Kg | Série {currentExercise.currentSet} /{' '}
                   {currentExercise.totalSets}
                 </Text>
 
@@ -333,12 +333,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '800'
   },
   subtitle: {
     color: '#dce1ff',
-    fontSize: 16,
+    fontSize: 20,
     marginTop: 4
   },
   cardButton: {
